@@ -1,0 +1,963 @@
+{
+	"name": "CosmosToFileStorage",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyParquetAccount",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100,
+						"filter": "{$or: [{createdAt: {$gte: ISODate(\"2020-06-01\")}}, {updatedAt: {$gte: ISODate(\"2020-06-01\")}}] }"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']"
+								},
+								"sink": {
+									"name": "_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['type']"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['phoneNumber']"
+								},
+								"sink": {
+									"name": "phoneNumber",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['branchIds']"
+								},
+								"sink": {
+									"name": "branchids",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['depotIds']"
+								},
+								"sink": {
+									"name": "depotids",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdAt']['$date']"
+								},
+								"sink": {
+									"name": "createDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['updatedAt']['$date']"
+								},
+								"sink": {
+									"name": "updateDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['siteId']"
+								},
+								"sink": {
+									"name": "siteId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['isArchive']"
+								},
+								"sink": {
+									"name": "isArchive",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['externalId']"
+								},
+								"sink": {
+									"name": "externalId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['businessId']"
+								},
+								"sink": {
+									"name": "businessId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['avatarUrl']"
+								},
+								"sink": {
+									"name": "avatarUrl",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['address']"
+								},
+								"sink": {
+									"name": "address",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['pricePlanBundleUser']['pricePlanBundle']['_id']"
+								},
+								"sink": {
+									"name": "pricePlanBundleId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['pricePlanBundleUser']['pricePlanBundle']['name']"
+								},
+								"sink": {
+									"name": "pricePlanBundleName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['businessCategory']"
+								},
+								"sink": {
+									"name": "businessCategory",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['country']"
+								},
+								"sink": {
+									"name": "country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['active']"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['enableSms']"
+								},
+								"sink": {
+									"name": "enableSms",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['enableEmail']"
+								},
+								"sink": {
+									"name": "enableEmail",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['enableObserver']"
+								},
+								"sink": {
+									"name": "enableObserver",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['useAccountLogo']"
+								},
+								"sink": {
+									"name": "useAccountLogo",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['useAccountPhone']"
+								},
+								"sink": {
+									"name": "useAccountPhone",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['webSiteUrl']"
+								},
+								"sink": {
+									"name": "webSiteUrl",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['serviceTimeMinutes']"
+								},
+								"sink": {
+									"name": "serviceTimeMinutes",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dispatchMode']"
+								},
+								"sink": {
+									"name": "dispatchMode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['typeGroup']['demand']"
+								},
+								"sink": {
+									"name": "demand",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['typeGroup']['supply']"
+								},
+								"sink": {
+									"name": "supply",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['typeGroup']['business']"
+								},
+								"sink": {
+									"name": "business",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['enableSurvey']"
+								},
+								"sink": {
+									"name": "enableSurvey",
+									"type": "Boolean"
+								}
+							}
+						],
+						"collectionReference": "",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosCollection",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_cosmos_name": "Account"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "Account"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopyParquetBranch",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CopyParquetRole",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100,
+						"filter": "{$or: [{createdAt: {$gte: ISODate(\"2020-06-01\")}}, {updatedAt: {$gte: ISODate(\"2020-06-01\")}}] }"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']"
+								},
+								"sink": {
+									"name": "_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['siteId']"
+								},
+								"sink": {
+									"name": "siteId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['memberIds']"
+								},
+								"sink": {
+									"name": "memberIds",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['updatedAt']['$date']"
+								},
+								"sink": {
+									"name": "updatedt",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdAt']['$date']"
+								},
+								"sink": {
+									"name": "createdt",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosCollection",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_cosmos_name": "Branch"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "Branch"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopyParquetRole",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CopyParquetAccount",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100,
+						"filter": "{$or: [{createdAt: {$gte: ISODate(\"2020-06-01\")}}, {updatedAt: {$gte: ISODate(\"2020-06-01\")}}] }"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']"
+								},
+								"sink": {
+									"name": "_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['status']"
+								},
+								"sink": {
+									"name": "status",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['agentType']"
+								},
+								"sink": {
+									"name": "agentType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['employmentType']"
+								},
+								"sink": {
+									"name": "employmentType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['registrationStatus']"
+								},
+								"sink": {
+									"name": "registrationStatus",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['teamIds']"
+								},
+								"sink": {
+									"name": "teamlds",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['branchIds']"
+								},
+								"sink": {
+									"name": "branchIds",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['depotIds']"
+								},
+								"sink": {
+									"name": "depotIds",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['statusSetBy']"
+								},
+								"sink": {
+									"name": "statusSetBy",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['rating']"
+								},
+								"sink": {
+									"name": "rating",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['numOfVotes']"
+								},
+								"sink": {
+									"name": "numOfVotes",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['vehicle']['$ref']"
+								},
+								"sink": {
+									"name": "vechile"
+								}
+							},
+							{
+								"source": {
+									"path": "$['vehicleList'][0]['$ref']"
+								},
+								"sink": {
+									"name": "vechileListID"
+								}
+							},
+							{
+								"source": {
+									"path": "$['lastKnownLocation']['$ref']"
+								},
+								"sink": {
+									"name": "lastlocationRef"
+								}
+							},
+							{
+								"source": {
+									"path": "$['lastKnownLocation']['$id']"
+								},
+								"sink": {
+									"name": "lastlocationId"
+								}
+							},
+							{
+								"source": {
+									"path": "$['licenseInfo']['moreThenOneYear']"
+								},
+								"sink": {
+									"name": "moreThenOneYear",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['licenseInfo']['drivenWithAnother']"
+								},
+								"sink": {
+									"name": "drivenWithAnother",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['documents']"
+								},
+								"sink": {
+									"name": "documents",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['firstName']"
+								},
+								"sink": {
+									"name": "firstName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['lastName']"
+								},
+								"sink": {
+									"name": "lastName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['email']"
+								},
+								"sink": {
+									"name": "email",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['type']"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['active']"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['country']"
+								},
+								"sink": {
+									"name": "country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdAt']['$date']"
+								},
+								"sink": {
+									"name": "createdAt",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['updatedAt']['$date']"
+								},
+								"sink": {
+									"name": "updatedAt",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['siteId']"
+								},
+								"sink": {
+									"name": "siteId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['isArchive']"
+								},
+								"sink": {
+									"name": "isArchive",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['mask']"
+								},
+								"sink": {
+									"name": "mask",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['registrationStatusActive']"
+								},
+								"sink": {
+									"name": "registrationStatusActive",
+									"type": "Boolean"
+								}
+							}
+						],
+						"collectionReference": "",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosCollection",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_cosmos_name": "Role"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "Role"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopyParquetBringozUser",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CopyParquetBranch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100,
+						"filter": "{$or: [{createdAt: {$gte: ISODate(\"2020-06-01\")}}, {updatedAt: {$gte: ISODate(\"2020-06-01\")}}] }"
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']"
+								},
+								"sink": {
+									"name": "_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ssn']"
+								},
+								"sink": {
+									"name": "ssn",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['email']"
+								},
+								"sink": {
+									"name": "email",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['mobilePhone']"
+								},
+								"sink": {
+									"name": "mobilePhone",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['firstName']"
+								},
+								"sink": {
+									"name": "firstName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['middleName']"
+								},
+								"sink": {
+									"name": "middleName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['lastName']"
+								},
+								"sink": {
+									"name": "lastName",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['avatarUrl']"
+								},
+								"sink": {
+									"name": "avatarUrl",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['country']"
+								},
+								"sink": {
+									"name": "country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['localeCode']"
+								},
+								"sink": {
+									"name": "localeCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['active']"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"path": "$['dateOfBirth']['$date']"
+								},
+								"sink": {
+									"name": "dateOfBirth",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdAt']['$date']"
+								},
+								"sink": {
+									"name": "createdAt",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['updatedAt']['$date']"
+								},
+								"sink": {
+									"name": "updatedAt",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosCollection",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_cosmos_name": "BringozUser"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "BringozUser"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

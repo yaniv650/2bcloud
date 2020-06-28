@@ -1,0 +1,754 @@
+{
+	"name": "StorageToTable",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopySynapseBranch",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowCopyCommand": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "siteId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "site_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "updatedt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "memberIds",
+									"type": "String"
+								},
+								"sink": {
+									"name": "member_ids",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "Branch"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSynapseAnalyticsTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"table": "stg_branch"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopySynapseRole",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CopySynapseAccount_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowCopyCommand": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "status",
+									"type": "String"
+								},
+								"sink": {
+									"name": "status",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "employmentType",
+									"type": "String"
+								},
+								"sink": {
+									"name": "employment_type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "rating",
+									"type": "String"
+								},
+								"sink": {
+									"name": "rating",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "numOfVotes",
+									"type": "String"
+								},
+								"sink": {
+									"name": "num_of_votes",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "active",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "country",
+									"type": "String"
+								},
+								"sink": {
+									"name": "country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "siteId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "site_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdAt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "updatedAt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "branchIds",
+									"type": "String"
+								},
+								"sink": {
+									"name": "branch_ids",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "depotIds",
+									"type": "String"
+								},
+								"sink": {
+									"name": "depot_ids",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "teamlds",
+									"type": "String"
+								},
+								"sink": {
+									"name": "team_ids",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "Role"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSynapseAnalyticsTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"table": "stg_agent"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopySynapseUser",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CopySynapseRole",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowCopyCommand": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "email",
+									"type": "String"
+								},
+								"sink": {
+									"name": "email",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "mobilePhone",
+									"type": "String"
+								},
+								"sink": {
+									"name": "mobile_phone",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "firstName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "first_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "middleName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "middle_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "lastName",
+									"type": "String"
+								},
+								"sink": {
+									"name": "last_name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "dateOfBirth",
+									"type": "String"
+								},
+								"sink": {
+									"name": "date_of_birth",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "active",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "country",
+									"type": "String"
+								},
+								"sink": {
+									"name": "country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdAt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "updatedAt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "BringozUser"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSynapseAnalyticsTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"table": "stg_user"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopySynapseAccount_copy1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CopySynapseBranch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowCopyCommand": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "name",
+									"type": "String"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "businessId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "business_Id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "type",
+									"type": "String"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "demand",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "type_group_demand",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "supply",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "type_group_supply",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "business",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "type_group_business",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "phoneNumber",
+									"type": "String"
+								},
+								"sink": {
+									"name": "phone_number",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "address",
+									"type": "String"
+								},
+								"sink": {
+									"name": "address",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "pricePlanBundleId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "price_plan_bundle_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "businessCategory",
+									"type": "String"
+								},
+								"sink": {
+									"name": "business_category",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "active",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "active",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "enableSms",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "enable_sms",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "enableEmail",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "enable_email",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "enableSurvey",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "enable_survey",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "enableObserver",
+									"type": "Boolean"
+								},
+								"sink": {
+									"name": "enable_observer",
+									"type": "Boolean"
+								}
+							},
+							{
+								"source": {
+									"name": "serviceTimeMinutes",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "service_time_minutes",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "dispatchMode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "dispatch_mode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "siteId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "site_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createDate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "updateDate",
+									"type": "String"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "branchids",
+									"type": "String"
+								},
+								"sink": {
+									"name": "branch_ids",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "Account"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSynapseAnalyticsTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"table": "stg_account"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
