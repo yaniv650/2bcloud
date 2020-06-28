@@ -1,0 +1,207 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyParquetServiceAreaCoordinate",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "CosmosDbMongoDbApiSource",
+						"batchSize": 100,
+						"filter": ""
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['_id']"
+								},
+								"sink": {
+									"name": "_id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['coordinates']"
+								},
+								"sink": {
+									"name": "coordinates",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['updatedAt']['$date']"
+								},
+								"sink": {
+									"name": "updatedAt",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['site']['$id']"
+								},
+								"sink": {
+									"name": "siteId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['createdAt']['$date']"
+								},
+								"sink": {
+									"name": "createdAt",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": "$['coordinates']",
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CosmosCollection",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_cosmos_name": "ServiceArea"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "ServiceAreaCoord",
+							"env": "test"
+						}
+					}
+				]
+			},
+			{
+				"name": "CopySynapseServiceAreaCoordinate",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlDWSink",
+						"allowCopyCommand": true
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "_id",
+									"type": "String"
+								},
+								"sink": {
+									"name": "id",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "coordinates",
+									"type": "String"
+								},
+								"sink": {
+									"name": "coordinates"
+								}
+							},
+							{
+								"source": {
+									"name": "updatedAt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "updated_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "createdAt",
+									"type": "String"
+								},
+								"sink": {
+									"name": "created_at",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "siteId",
+									"type": "String"
+								},
+								"sink": {
+									"name": "site_id",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "BlobParquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"collection_name": "ServiceAreaCoord",
+							"env": "test"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSynapseAnalyticsTable",
+						"type": "DatasetReference",
+						"parameters": {
+							"table": "stg_area_coord"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}

@@ -8,6 +8,10 @@
 		"parameters": {
 			"collection_name": {
 				"type": "string"
+			},
+			"env": {
+				"type": "string",
+				"defaultValue": "test"
 			}
 		},
 		"annotations": [],
@@ -20,10 +24,13 @@
 					"type": "Expression"
 				},
 				"folderPath": {
-					"value": "@concat('Parquet')",
+					"value": "@formatDateTime(utcnow(),'MM-dd-yyyy')",
 					"type": "Expression"
 				},
-				"fileSystem": "cosmosmrr"
+				"fileSystem": {
+					"value": "@concat(dataset().env,'/','cosmosmrr')",
+					"type": "Expression"
+				}
 			},
 			"compressionCodec": "snappy"
 		},
